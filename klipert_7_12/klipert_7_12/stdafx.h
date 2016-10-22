@@ -8,50 +8,68 @@
 
 using namespace std;
 
-class B1
-{
+class B {
 	int a;
 public:
-	B1() { };
-	B1(int x) { a = x; }
-	void show_B1() { cout << "B1 = " << a << endl; }
-	void show() { cout << "B1 = " << a << endl; }
+	B() {}
+	B(int x) { a = x; }
+	void show_B() { cout << "B = " << a << endl; }
+	void show() { cout << "B = " << a << endl; }
 };
 
-class B2
-{
+class D1 : public B {
 	int b;
 public:
-	B2() { };
-	B2(int x) { b = x; }
-	void show_B2() { cout << "B2 = " << b << endl; }
-	void show() { cout << "B2 = " << b << endl; }
+	D1(int a, int x) : B(x) { b = a; }
+	void show_D1() {
+		cout << "D1 = " << b << endl; 
+		show_B();
+	}
+	void show() { cout << "D1 = " << b << endl; }
 };
 
-class B3
-{
+class D2 : private B {
 	int c;
 public:
-	B3() { };
-	B3(int x) { c = x; }
-	void show_B3() { cout << "B3 = " << c << endl; }
-	void show() { cout << "B3= " << c << endl; }
+	D2(int a, int x) : B(x) { c = a; }
+	void show_D2() {
+		cout << "D2 = " << c << endl;
+		show_B();
+	}
+	void show() { cout << "D2 = " << c << endl; }
 };
 
-class D1 : public B1, public B2, private B3
-{
+class D3 : private B {
 	int d;
 public:
-	D1(int a, int x, int y, int z) : B1(x), B2(y), B3(z) { d = a; }
-	void show_D1() { cout << "D1 = " << d << endl; show_B1(); show_B2(); show_B3(); }
-	void show() { cout << "D1 = " << d << endl; }
+	D3(int a, int x) : B(x) { d = a; }
+	void show_D3() {
+		cout << "D3 = " << d << endl;
+		show_B();
+	}
+	void show() { cout << "D3 = " << d << endl; }
 };
 
-class D2 : public D1
-{
+class D4 : private D1, public D2 {
 	int e;
 public:
-	D2(int a, int b, int x, int y, int z) : D1(b, x, y, z) { e = a; }
-	void show_D2() { cout << "D2 = " << e << endl; show_D1(); }
-	void show() { cout << "D2 = " << e << endl; }
+	D4(int a, int x, int y) : D1(x,y), D2(x,y) { e = a; }
+	void show_D4() {
+		cout << "D4 = " << e << endl;
+		show_D2();
+		show_D1();
+	}
+	void show() { cout << "D4 = " << e << endl; }
+};
+
+class D5 : private D3, public D2 {
+	int f;
+public:
+	D5(int a, int x, int y) : D2(x, y), D3(x, y) { f = a; }
+	void show_D5() {
+		cout << "D5 = " << f << endl;
+		show_D2();
+		show_D3();
+	}
+	void show() { cout << "D5 = " << f << endl; }
 };
